@@ -1,93 +1,96 @@
 const express = require("express");
 const app = express();
-app.use(express.json()); //isso para garantir o tratamento do json
+app.use(express.json()); 
 
-// Permissões, senão colocar pode ser que não 
-// funcione com o cliente
+
 var cors = require('cors');
 app.use(cors());
 
-// Porta que eu estou ouvindo, o primeiro é pro heroku e o segundo é pra usar no pc
+
 app.listen(process.env.PORT || 3000);
 
 
-// strings para o banco de dados
-const Bulbasaur = '{ "name":"Bulbasaur", "type":"Grass/Poison", "about":"There is a plant seed on its back right from the day this Pokémon is born. The seed slowly grows larger." }';
-const Ivysaur = '{ "name":"Ivysaur", "type":"Grass/Poison", "about":"When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs." }';
-const Venusaur = '{ "name":"Venusaur", "type":"Grass/Poison", "about":"Its plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight." }';
-const Charmander = '{ "name":"Charmander", "type":"Fire", "about":"It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail." }';
-const Charmeleon = '{ "name":"Charmeleon", "type":"Fire", "about":"It has a barbaric nature. In battle, it whips its fiery tail around and slashes away with sharp claws." }';
-const Charizard  = '{ "name":"Charizard ", "type":"Fire/Flying", "about":"It spits fire that is hot enough to melt boulders. It may cause forest fires by blowing flames." }';
-const Squirtle = '{ "name":"Squirtle", "type":"Water", "about":"When it retracts its long neck into its shell, it squirts out water with vigorous force." }';
-const Wartortle = '{ "name":"Wartortle", "type":"Water", "about":"It is recognized as a symbol of longevity. If its shell has algae on it, that Wartortle is very old." }';
-const Blastoise  = '{ "name":"Blastoise ", "type":"Water", "about":"It crushes its foe under its heavy body to cause fainting. In a pinch, it will withdraw inside its shell." }';
+
+const ronaldinho = '{ "name":"Ronaldinho Gaucho", "type":"meio-atacante"}';
+const lucio = '{ "name":"Lúcio", "type":"Zagueiro" }';
+const tafarel = '{ "name":"Tafarel", "type":"Goleiro"}';
+const neymar = '{ "name":"Neymar Jr", "type":"Ponta Esquerda"}';
+const kaka = '{ "name":"Kaka", "type":"Meio campo"}';
+const daniel  = '{ "name":"Daniel Alves ", "type":"Lateral Direito"}';
+const roberto = '{ "name":"roberto carlos", "type":"Lateral Esquerdo"}';
+const ronaldo = '{ "name":"Ronaldo Fenomeno", "type":"Centro-Avante"}';
+const william  = '{ "name":"William", "type":"Ponta Direita"}';
+const paulinho  = '{ "name":"Paulinho", "type":"segundo volante"}';
+const dunga  = '{ "name":"Dunga", "type":"primeiro volante"}';
 
 
-// array simulando um banco de dados, com os objetos Json
-const pokedex = [ JSON.parse(Bulbasaur), 
-                  JSON.parse(Ivysaur),
-                  JSON.parse(Venusaur),
-                  JSON.parse(Charmander),
-                  JSON.parse(Charmeleon),
-                  JSON.parse(Charizard),
-                  JSON.parse(Squirtle),
-                  JSON.parse(Wartortle),
-                  JSON.parse(Blastoise)
+
+const time = [ JSON.parse(ronaldinho), 
+                  JSON.parse(lucio),
+                  JSON.parse(tafarel),
+                  JSON.parse(neymar),
+                  JSON.parse(kaka),
+                  JSON.parse(daniel),
+                  JSON.parse(roberto),
+                  JSON.parse(ronaldo),
+                  JSON.parse(william)
+                  JSON.parse(paulinho)
+                  JSON.parse(dunga)
 ];
 
-// novo endpoint com uma explicação inicial
+
 app.get('/',
     function(req, res){
-        res.send("Olá esse é o Backend do Bruno Miguel e da Maria Eduarda, fizemos um banco de dados baseado em Pokemon. Nosso banco de dados é um Pokedex com os nove primeiros Pokemons da Região de Kanto."); 
+        res.send("Olá esse é o dream team da seleção brasileira, não precisa nem treinar"); 
     }
 );
 
-// novo endpoint com o banco de dados
-app.get('/pokedex',
+
+app.get('/time',
     function(req, res){
-        res.send(pokedex.filter(Boolean)); //isso é pra tratar os valores q aparecem como
-                                             //null, que são lidos como boleano
+        res.send(time.filter(Boolean)); 
+                                             
     }
 );
 
-// arrumando os indeces do arry para facilitar interface para o usuario
-app.get('/pokedex/:id',
+
+app.get('/time/:id',
     function(req, res){
         const id = req.params.id - 1;
-        const pokedexs = pokedex[id];
+        const times = time[id];
 
-        if (!pokedexs){
-            res.send("Pokemon não encontrado");
+        if (!times){
+            res.send("Jogador não encontrado");
         } else {
-            res.send(pokedexs);
+            res.send(times);
         }
     }
 )
-// usando o verbo post
-app.post('/pokedex', 
+
+app.post('/time', 
     (req, res) => {
-        console.log(req.body.pokedexs); // codigo para receber a mensagem 
-        const pokedexs = req.body.pokedexs;
-        pokedex.push(pokedexs); // vai colocar a nova mensgem no banco de dados, quando atualizar o localhost vai aparecer
-                                 // a mensagem adicionada ao banco de dados, no caso um array
-        res.send("Pokemon adicionado")
+        console.log(req.body.times); 
+        const times = req.body.times;
+        time.push(times); 
+                                 
+        res.send("Craque adicionado")
     }
 );
-// trocar algo antigo por algo novo
-app.put('/pokedex/:id',
+
+app.put('/time/:id',
     (req, res) => {
         const id = req.params.id - 1;
-        const pokedexs = req.body.pokedexs;
-        pokedex[id] = pokedexs;        
-        res.send("Pokemon atualizado com sucesso.")
+        const times = req.body.times;
+        time[id] = times;        
+        res.send("Craque atualizado com sucesso.")
     }
 )
 
-app.delete('/pokedex/:id', 
+app.delete('/time/:id', 
     (req, res) => {
         const id = req.params.id - 1;
-        delete pokedex[id];
+        delete time[id];
 
-        res.send("Pokemon removido com sucesso");
+        res.send("Craque lesionado");
     }
 );
