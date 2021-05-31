@@ -82,7 +82,7 @@ app.put('/time/:id',
         const id = req.params.id - 1;
         const times = req.body.times;
         time[id] = times;        
-        res.send("Craque atualizado com sucesso.")
+        res.send("Craque substituido com sucesso.")
     }
 )
 
